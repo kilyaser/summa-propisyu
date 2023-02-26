@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ru" ng-app="app">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.0/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>
+    <script src="index.js"></script>
+<!--    <meta name='yandex-verification' content='???????????????' TODO: yandex-verification />-->
+    <title>Сумма прописью - онлайн сервис</title>
+</head>
+<body ng-controller="sumController">
+    <div class="container shadow-lg" style="height: 100%">
+        <div class="container">
+            <form>
+                <h1 class="h4 sm-3 font-weight-normal pt-5"><a class="text-decoration-none" href="/">Сумма Прописью Онлайн</a> - сервис быстрого перевода	</h1>
+                <div class="row pt-3">
+                    <div class="col-md pb-3">
+                        <label for="inputSumm">Введите сумму:</label>
+                        <input type="text" id="inputSumm" name="summ" class="form-control" required="" autofocus="" ng-init="formInfo.sum = '555.75'" ng-model="formInfo.sum">
+                    </div>
+
+                    <div class="col-md pb-3">
+                        <label for="inputVAT">Налог:</label>
+                        <select class="form-control" id="inputVAT" name="vat" required="" ng-init="formInfo.inputVAT = '20'" ng-model="formInfo.inputVAT">
+                            <option value="0">Без НДС</option>
+                            <option value="7">7% НДС</option>
+                            <option value="10">10% НДС</option>
+                            <option value="12">12% НДС</option>
+                            <option value="17">17% НДС</option>
+                            <option value="15">15% НДС</option>
+                            <option value="18">18% НДС</option>
+                            <option value="20">20% НДС</option>
+                            <option value="13">13% НДФЛ</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md pb-3">
+                        <label for="inputval">Валюта:</label>
+                        <select class="form-control" id="inputval" name="val" required="" ng-init="formInfo.currency = 'RUB'" ng-model="formInfo.currency">
+                            <option value="RUB">₽ рубль</option>
+                            <option value="KZT">₸ тенге</option>
+                            <option value="USD">$ доллар</option>
+                            <option value="EUR">€ евро</option>
+                            <option value="CNY">¥ юань</option>
+                            <option value="UAH">₴ гривня</option>
+                            <option value="BYN">Br. бел.руб.</option>
+                            <option value="UZS">so’m узб.</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md pb-3">
+                        <label for="inputsep">Разделитель:</label>
+                        <select class="form-control" id="inputsep" name="sep" required="" ng-init="formInfo.point = '0'" ng-model="formInfo.point">
+                            <option value="0" selected="">.</option>
+                            <option value="1">,</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md pb-3">
+                        <br>
+                        <button class="btn btn-primary" type="submit" ng-click="getResult()">Перевести</button>
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+    </div>
+</body>
+</html>
