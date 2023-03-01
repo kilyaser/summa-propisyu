@@ -11,7 +11,7 @@ angular.module('app', ['ngStorage']).controller('sumController', function ($scop
     };
 
     $scope.getResult = function (data) {
-        console.log($scope.formInfo);
+        console.log(data);
         $http.post(sumContextPath, data)
             .then(function successCallback(response) {
                 $scope.sumWriting = response

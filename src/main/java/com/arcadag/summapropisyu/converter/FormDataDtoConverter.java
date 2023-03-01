@@ -13,13 +13,21 @@ public class FormDataDtoConverter {
         DataModel dataModel = new DataModel();
         String[] sumAndCoin = dto.getSum().split("\\.");
         dataModel.setSumWithoutCoin(BigDecimal.valueOf(Long.parseLong(sumAndCoin[0])));
-        dataModel.setCoin(BigDecimal.valueOf(Long.parseLong(sumAndCoin[1])));
+
+        if (sumAndCoin.length == 2) {
+            if (sumAndCoin[1].length() > 2) {
+                sumAndCoin[1] = sumAndCoin[1].substring(0, 2);
+            }
+            if (sumAndCoin[1].length() == 1) {
+                sumAndCoin[1] = sumAndCoin[1] + "0";
+            }
+            dataModel.setCoin(BigDecimal.valueOf(Long.parseLong(sumAndCoin[1])));
+        } else {
+            dataModel.setCoin(BigDecimal.ZERO);
+        }
+
         dataModel.setTotal(BigDecimal.valueOf(Float.parseFloat(dto.getSum())));
         dataModel.setVat(BigDecimal.valueOf(dto.getInputVAT()));
-//        dataModel.setVat(BigDecimal.valueOf(Float.valueOf(dto.getSum())).setScale(2, RoundingMode.FLOOR)
-//                        .divide(BigDecimal.valueOf(100))
-//                        .multiply(BigDecimal.valueOf(dto.getInputVAT())));
-
         dataModel.setPoint(dto.getPoint());
         dataModel.setCurrency(dto.getCurrency());
         return dataModel;
