@@ -26,17 +26,12 @@ public class AppResponseBuilder {
         if (currencyCollection.getCurrencyMap().containsKey(dataModel.getCurrency())) {
             appResponse.getResponses().add(getResponseV1(dataModel));
             appResponse.getResponses().add(getResponseV2(appResponse.getResponses().get(0)));
+            appResponse.getResponses().add(getResponseV3(dataModel));
+            appResponse.getResponses().add(getResponseV4(dataModel));
 
             for (String string : appResponse.getResponses()) {
                 log.info("stringBuilder: {}", string);
             }
-//            log.info("coin: {}", dataModel.getCoin());
-//            log.info("vat: {}", dataModel.getVat());
-//            log.info("totalSum: {}", dataModel.getTotal());
-
-            //        dataModel.setVat(BigDecimal.valueOf(Float.valueOf(dto.getSum())).setScale(2, RoundingMode.FLOOR)
-//                        .divide(BigDecimal.valueOf(100))
-//                        .multiply(BigDecimal.valueOf(dto.getInputVAT())));
 
         }
 
@@ -48,19 +43,50 @@ public class AppResponseBuilder {
     }
 
     private String getResponseV1(DataModel dataModel){
-        var converters = currencyCollection.getCurrencyMap().get(dataModel.getCurrency());
         var stringBuilder = new StringBuilder();
 
-        stringBuilder
-                .append(cutTailOfString(converters.asWords(dataModel.getSumWithoutCoin()), 8))
-                .append(getRubModification(dataModel))
-                .append(getCoinModification(dataModel));
-        return stringBuilder.toString();
+        return stringBuilder
+                .append(getRublePart(dataModel))
+                .append(getCoinPart(dataModel))
+                .toString();
     }
 
     private String getResponseV2(String data) {
         var stringBuilder = new StringBuilder(data.substring(0, 1).toUpperCase());
         return stringBuilder.append(data.substring(1)).toString();
+    }
+
+    private String getResponseV3(DataModel dataModel) {
+        var stringBuilder = new StringBuilder();
+        return stringBuilder
+                .append(getRublePart(dataModel))
+                .append(dataModel.getCoin())
+                .append(" ")
+                .append(getCoinTail(dataModel))
+                .toString();
+    }
+
+    private String getResponseV4(DataModel dataModel) {
+        var stringBuilder = new StringBuilder();
+            stringBuilder.append(getResponseV1(dataModel));
+
+            if (dataModel.getVat() == 0)  return stringBuilder.append(", НДС не облагается").toString();
+
+            return stringBuilder
+                    .append(", в т.ч. ")
+                    .append(currencyCollection.getKindOfVat().get(dataModel.getVat()))
+                    .append(" (").append(dataModel.getVat()).append("%) ")
+                    .append(dataModel.getSumOfVat())
+                    .append( " руб.").toString();
+    }
+
+    private String getRublePart(DataModel dataModel) {
+        var converters = currencyCollection.getCurrencyMap().get(dataModel.getCurrency());
+        var stringBuilder = new StringBuilder();
+        return stringBuilder
+                .append(cutTailOfString(converters.asWords(dataModel.getSumWithoutCoin()), 8))
+                .append(getRubModification(dataModel))
+                .toString();
     }
 
 
@@ -82,6 +108,17 @@ public class AppResponseBuilder {
         }
     }
 
+
+    private String getCoinPart(DataModel dataModel) {
+        var stringBuilder = new StringBuilder();
+        stringBuilder
+                .append(getCoinModification(dataModel))
+                .append(getCoinTail(dataModel));
+
+        return stringBuilder.toString();
+    }
+
+
     private String getCoinModification(DataModel dataModel) {
         var converters = currencyCollection.getCurrencyMap().get(dataModel.getCurrency());
         String string = dataModel.getCoin().intValue() >= 10 ? dataModel.getCoin().toString() : "0" + dataModel.getCoin();
@@ -92,20 +129,37 @@ public class AppResponseBuilder {
 
         if (mas[1].equals("1") && !mas[0].equals("1")) {
             if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), 11));
-            stringBuilder.append("одна копейка");
+            stringBuilder.append("одна ");
         } else if (mas[1].equals("2") && !mas[0].equals("1")){
             if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), 11));
-            stringBuilder.append("две копейки");
+            stringBuilder.append("две ");
         } else if ((mas[1].equals("3") || mas[1].equals("4")) && !mas[0].equals("1")) {
             if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), 11));
             stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[1]))), 11));
-            stringBuilder.append("копейки");
         } else {
             stringBuilder.append(cutTailOfString(converters.asWords(dataModel.getCoin()), 11));
+        }
+
+        return stringBuilder.toString();
+    }
+
+    private String getCoinTail(DataModel dataModel) {
+        String string = dataModel.getCoin().intValue() >= 10 ? dataModel.getCoin().toString() : "0" + dataModel.getCoin();
+        String[] mas = string.split("");
+        var stringBuilder = new StringBuilder();
+
+        if (mas[1].equals("1") && !mas[0].equals("1")) {
+            stringBuilder.append("копейка");
+        } else if (mas[1].equals("2") && !mas[0].equals("1")){
+            stringBuilder.append("копейки");
+        } else if ((mas[1].equals("3") || mas[1].equals("4")) && !mas[0].equals("1")) {
+            stringBuilder.append("копейки");
+        } else {
             stringBuilder.append("копеек");
         }
 
         return stringBuilder.toString();
+
     }
 
 
