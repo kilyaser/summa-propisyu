@@ -14,6 +14,6 @@ public class DataModel {
     private Integer vat;
     private BigDecimal sumOfVat;
     private BigDecimal coin;
-    private int point;
+    private String point;
     private String currency;
 }

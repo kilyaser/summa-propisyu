@@ -1,6 +1,8 @@
 package com.arcadag.summapropisyu.domain;
 
+import com.arcadag.summapropisyu.converter.FormDataDtoConverter;
 import com.arcadag.summapropisyu.dtos.AppResponseDto;
+import com.arcadag.summapropisyu.dtos.FormDataDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -13,7 +15,11 @@ import java.util.ArrayList;
 @Slf4j
 public class AppResponseBuilder {
     private AppResponseDto appResponse;
+    private static final Integer RUBLE_TAIL_CUTTER = 11;
+    private static final Integer COIN_TAIL_CUTTER = 8;
     private final CurrencyCollection currencyCollection;
+    private final FormDataDtoConverter formDataDtoConverter;
+    private final FormDataDtoBuilder formDataDtoBuilder;
 
     public AppResponseBuilder create() {
         appResponse = new AppResponseDto();
@@ -28,11 +34,12 @@ public class AppResponseBuilder {
             appResponse.getResponses().add(getResponseV2(appResponse.getResponses().get(0)));
             appResponse.getResponses().add(getResponseV3(dataModel));
             appResponse.getResponses().add(getResponseV4(dataModel));
+            appResponse.getResponses().add(getResponseV5(dataModel));
+            appResponse.getResponses().add(getResponseV6(dataModel));
 
             for (String string : appResponse.getResponses()) {
-                log.info("stringBuilder: {}", string);
+                log.info(">>App Responses: {}", string);
             }
-
         }
 
         return this;
@@ -76,15 +83,43 @@ public class AppResponseBuilder {
                     .append(", в т.ч. ")
                     .append(currencyCollection.getKindOfVat().get(dataModel.getVat()))
                     .append(" (").append(dataModel.getVat()).append("%) ")
-                    .append(dataModel.getSumOfVat())
+                    .append(dataModel.getSumOfVat().toString().replace(".", dataModel.getPoint()))
                     .append( " руб.").toString();
+    }
+
+    private String getResponseV5(DataModel dataModel) {
+        var stringBuilder = new StringBuilder();
+         return stringBuilder
+                 .append(getResponseV4(dataModel))
+                 .append(" (")
+                 .append(getResponseV1(dataModel))
+                 .append(")").toString();
+    }
+
+    private String getResponseV6(DataModel dataModel) {
+        var stringBuilder = new StringBuilder();
+        var formDataDtoOfSumOfVat = formDataDtoBuilder.getFromData(dataModel);
+
+
+        return stringBuilder
+                .append(dataModel.getTotal().toString().replace(".", dataModel.getPoint()))
+                .append(" руб.")
+                .append( "(")
+                .append(getResponseV1(dataModel))
+                .append("), в т.ч. НДС(")
+                .append(dataModel.getVat())
+                .append("%) ")
+                .append(dataModel.getSumOfVat().toString().replace(".", dataModel.getPoint()))
+                .append(" руб. (")
+                .append(getResponseV1(formDataDtoConverter.formDataDtoToDataModel(formDataDtoOfSumOfVat)))
+                .append(")").toString();
     }
 
     private String getRublePart(DataModel dataModel) {
         var converters = currencyCollection.getCurrencyMap().get(dataModel.getCurrency());
         var stringBuilder = new StringBuilder();
         return stringBuilder
-                .append(cutTailOfString(converters.asWords(dataModel.getSumWithoutCoin()), 8))
+                .append(cutTailOfString(converters.asWords(dataModel.getSumWithoutCoin()), COIN_TAIL_CUTTER))
                 .append(getRubModification(dataModel))
                 .toString();
     }
@@ -128,16 +163,16 @@ public class AppResponseBuilder {
         var stringBuilder = new StringBuilder();
 
         if (mas[1].equals("1") && !mas[0].equals("1")) {
-            if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), 11));
+            if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), RUBLE_TAIL_CUTTER));
             stringBuilder.append("одна ");
         } else if (mas[1].equals("2") && !mas[0].equals("1")){
-            if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), 11));
+            if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), RUBLE_TAIL_CUTTER));
             stringBuilder.append("две ");
         } else if ((mas[1].equals("3") || mas[1].equals("4")) && !mas[0].equals("1")) {
-            if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), 11));
-            stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[1]))), 11));
+            if (!mas[0].equals("0")) stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[0] + "0"))), RUBLE_TAIL_CUTTER));
+            stringBuilder.append(cutTailOfString(converters.asWords(BigDecimal.valueOf(Integer.parseInt(mas[1]))), RUBLE_TAIL_CUTTER));
         } else {
-            stringBuilder.append(cutTailOfString(converters.asWords(dataModel.getCoin()), 11));
+            stringBuilder.append(cutTailOfString(converters.asWords(dataModel.getCoin()), RUBLE_TAIL_CUTTER));
         }
 
         return stringBuilder.toString();

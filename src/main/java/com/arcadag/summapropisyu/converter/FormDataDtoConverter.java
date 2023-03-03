@@ -14,7 +14,16 @@ public class FormDataDtoConverter {
 
     public DataModel formDataDtoToDataModel(FormDataDto dto) {
         DataModel dataModel = new DataModel();
+        dto.setSum(dto.getSum().replace(",", "."));
         String[] sumAndCoin = dto.getSum().split("\\.");
+
+        if (dto.getPoint() == 0) {
+            dataModel.setPoint(".");
+        } else {
+            dataModel.setPoint(",");
+        }
+
+        log.info(">>sumAndCoin[0]: {}", sumAndCoin[0]);
         dataModel.setSumWithoutCoin(BigDecimal.valueOf(Long.parseLong(sumAndCoin[0])));
 
         if (sumAndCoin.length == 2) {
@@ -35,7 +44,7 @@ public class FormDataDtoConverter {
                 .divide(BigDecimal.valueOf(100 + dataModel.getVat()), 7, RoundingMode.HALF_EVEN)
                 .multiply(BigDecimal.valueOf(dataModel.getVat())).setScale(2, RoundingMode.HALF_UP));
 
-        dataModel.setPoint(dto.getPoint());
+
         dataModel.setCurrency(dto.getCurrency());
         return dataModel;
     }
