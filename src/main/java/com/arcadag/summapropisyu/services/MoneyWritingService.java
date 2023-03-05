@@ -2,14 +2,13 @@ package com.arcadag.summapropisyu.services;
 
 import com.arcadag.summapropisyu.converter.FormDataDtoConverter;
 import com.arcadag.summapropisyu.domain.AppResponseBuilder;
-import com.arcadag.summapropisyu.domain.CurrencyCollection;
 import com.arcadag.summapropisyu.domain.DataModel;
 import com.arcadag.summapropisyu.dtos.AppResponseDto;
 import com.arcadag.summapropisyu.dtos.FormDataDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import pl.allegro.finance.tradukisto.MoneyConverters;
+
 
 @Service
 @RequiredArgsConstructor

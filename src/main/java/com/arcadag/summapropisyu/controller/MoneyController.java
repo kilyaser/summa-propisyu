@@ -1,6 +1,5 @@
 package com.arcadag.summapropisyu.controller;
 
-
 import com.arcadag.summapropisyu.dtos.FormDataDto;
 import com.arcadag.summapropisyu.services.MoneyWritingService;
 import lombok.RequiredArgsConstructor;

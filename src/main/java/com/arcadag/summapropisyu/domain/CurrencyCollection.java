@@ -3,9 +3,6 @@ package com.arcadag.summapropisyu.domain;
 import lombok.Getter;
 import org.springframework.stereotype.Component;
 import pl.allegro.finance.tradukisto.MoneyConverters;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component

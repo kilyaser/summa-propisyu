@@ -2,14 +2,12 @@ package com.arcadag.summapropisyu.converter;
 
 import com.arcadag.summapropisyu.domain.DataModel;
 import com.arcadag.summapropisyu.dtos.FormDataDto;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 
 
 @Component
-@Slf4j
 public class FormDataDtoConverter {
 
     public DataModel formDataDtoToDataModel(FormDataDto dto) {
@@ -23,7 +21,6 @@ public class FormDataDtoConverter {
             dataModel.setPoint(",");
         }
 
-        log.info(">>sumAndCoin[0]: {}", sumAndCoin[0]);
         dataModel.setSumWithoutCoin(BigDecimal.valueOf(Long.parseLong(sumAndCoin[0])));
 
         if (sumAndCoin.length == 2) {
