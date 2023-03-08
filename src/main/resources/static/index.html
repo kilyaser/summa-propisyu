@@ -63,9 +63,12 @@
             </form>
 
             <p class="text-muted" style="margin:0;">Результат перевода:</p>
-            <div class="input-group pb-2 mt-2 d-flex align-items-stretch" ng-repeat="a in sumWriting.responses">
-                <textarea rows="1"  class="form-control txt mb-2" style="overflow: hidden; height: 36px;" id="result1">{{a}}</textarea>
-                <div class="input-group-append d-flex align-items-stretch"><span class="input-group-text"><a href="#"  title="Скопировать"><img src="image/copy.png" width=32 height=32 alt="copy"></a></span></div>
+            <div class="input-group pb-2 mt-2 d-flex align-items-stretch" ng-repeat="s in sumWriting.responses">
+                <textarea rows="1"  class="form-control txt mb-2" style="overflow: hidden; height: 36px;" >{{s}}</textarea>
+                <div class="input-group-append d-flex align-items-stretch" >
+                    <a href="#"  class="btn-clipboard" title="Скопировать" ng-click="copyResult(s, $event)">
+                    <img src="image/copy.png" width=32 height=32 alt="copy" id="result{{$index}}"></a>
+                </div>
             </div>
 
             <div class="row mt-3 mb-5">
@@ -82,4 +85,5 @@
 
     </div>
 </body>
+
 </html>
