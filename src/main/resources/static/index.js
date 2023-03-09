@@ -7,7 +7,7 @@ angular.module('app', ['ngStorage']).controller('sumController', function ($scop
         currency: "RUB",
         inputVAT: "20",
         point: "0",
-        sum: "555.75"
+        sum: "479.11"
     };
 
     $scope.getResult = function (data) {

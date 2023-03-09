@@ -15,16 +15,17 @@
     <div class="container shadow-lg" style="height: 100%">
         <div class="container">
             <form>
-                <h1 class="h4 sm-3 font-weight-normal pt-5"><a class="text-decoration-none" href="/">Сумма Прописью Онлайн</a> - сервис быстрого перевода	</h1>
+                <h1 class="h4 sm-3 font-weight-normal pt-5 text-center mb-5"><a class="text-decoration-none" href="/">Сумма прописью онлайн</a> - сервис быстрого перевода	</h1>
+                <hr>
                 <div class="row pt-3">
                     <div class="col-md pb-3">
                         <label for="inputSumm">Введите сумму:</label>
-                        <input type="text" id="inputSumm" name="summ" class="form-control" required="" autofocus="" ng-init="formInfo.sum = '555.75'" ng-model="formInfo.sum">
+                        <input type="text" id="inputSumm" name="summ" class="form-control" required="" autofocus="" ng-init="formInfo.sum = defaultInfo.sum" ng-model="formInfo.sum">
                     </div>
 
                     <div class="col-md pb-3">
                         <label for="inputVAT">Налог:</label>
-                        <select class="form-control" id="inputVAT" name="vat" required="" ng-init="formInfo.inputVAT = '20'" ng-model="formInfo.inputVAT">
+                        <select class="form-control" id="inputVAT" name="vat" required="" ng-init="formInfo.inputVAT = defaultInfo.inputVAT" ng-model="formInfo.inputVAT">
                             <option value="0">Без НДС</option>
                             <option value="7">7% НДС</option>
                             <option value="10">10% НДС</option>
@@ -39,7 +40,7 @@
 
                     <div class="col-md pb-3">
                         <label for="inputval">Валюта:</label>
-                        <select class="form-control" id="inputval" name="val" required="" ng-init="formInfo.currency = 'RUB'" ng-model="formInfo.currency">
+                        <select class="form-control" id="inputval" name="val" required="" ng-init="formInfo.currency = defaultInfo.currency" ng-model="formInfo.currency">
                             <option value="RUB">₽ рубль</option>
                             <option value="USD">$ доллар</option>
                             <option value="EUR">€ евро</option>
@@ -48,7 +49,7 @@
 
                     <div class="col-md pb-3">
                         <label for="inputsep">Разделитель:</label>
-                        <select class="form-control" id="inputsep" name="sep" required="" ng-init="formInfo.point = '0'" ng-model="formInfo.point">
+                        <select class="form-control" id="inputsep" name="sep" required="" ng-init="formInfo.point = defaultInfo.point" ng-model="formInfo.point">
                             <option value="0" selected="">.</option>
                             <option value="1">,</option>
                         </select>
@@ -64,7 +65,7 @@
 
             <p class="text-muted" style="margin:0;">Результат перевода:</p>
             <div class="input-group pb-2 mt-2 d-flex align-items-stretch" ng-repeat="s in sumWriting.responses">
-                <textarea rows="2" id="txtbody" class="form-control txt mb-2" style="overflow: hidden; height: 60px; " >{{s}}</textarea>
+                <textarea rows="1" class="form-control txt" style="overflow: hidden; height: 60px; " >{{s}}</textarea>
                 <div class="input-group-append d-flex align-items-stretch" ><span class="input-group-text">
                     <a href="#"  class="btn-clipboard" title="Скопировать" ng-click="copyResult(s, $event)">
                     <img src="image/copy.png" width=32 height=32 alt="copy" id="result{{$index}}"></a></span>
@@ -74,16 +75,21 @@
             <div class="row mt-3 mb-5">
                 <div class="col mt-3">
                     <p class="mt-1 mb-3 text-decoration-none">
-                        добавьте в избранное: <a href="https://summapro.ru/" class="text-decoration-none">summapro.ru</a>
+                        Добавьте в избранное: <a href="https://summapro.ru/" class="text-decoration-none">summapro.ru</a>
                         <br>
-                        <a href="#" class="text-decoration-none pb-5">будем рады отзывам и предложениям</a>
+                        <span>Будем рады отзывам и предложениям</span>
+                        <a href="mailto:support@summapro.ru" class="text-decoration-none pb-5">support@summapro.ru</a>
                     </p>
 
                 </div>
             </div>
         </div>
-
     </div>
+    <footer>
+        <div class="d-flex justify-content-center sticky-bottom mb-5">
+            <div class="text-center">&copy; Ilia Kalendarev. 2023</div>
+        </div>
+    </footer>
 </body>
 
 </html>
