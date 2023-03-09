@@ -64,10 +64,10 @@
 
             <p class="text-muted" style="margin:0;">Результат перевода:</p>
             <div class="input-group pb-2 mt-2 d-flex align-items-stretch" ng-repeat="s in sumWriting.responses">
-                <textarea rows="1"  class="form-control txt mb-2" style="overflow: hidden; height: 36px;" >{{s}}</textarea>
-                <div class="input-group-append d-flex align-items-stretch" >
+                <textarea rows="2" id="txtbody" class="form-control txt mb-2" style="overflow: hidden; height: 60px; " >{{s}}</textarea>
+                <div class="input-group-append d-flex align-items-stretch" ><span class="input-group-text">
                     <a href="#"  class="btn-clipboard" title="Скопировать" ng-click="copyResult(s, $event)">
-                    <img src="image/copy.png" width=32 height=32 alt="copy" id="result{{$index}}"></a>
+                    <img src="image/copy.png" width=32 height=32 alt="copy" id="result{{$index}}"></a></span>
                 </div>
             </div>
 
