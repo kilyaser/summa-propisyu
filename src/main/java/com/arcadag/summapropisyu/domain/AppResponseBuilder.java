@@ -27,16 +27,6 @@ public class AppResponseBuilder {
     }
 
     public AppResponseBuilder addResponses(DataModel dataModel) {
-        log.info("== total in DM: {}", dataModel.getTotal());
-        log.info("== sumWithoutCoin in DM: {}", dataModel.getSumWithoutCoin());
-        log.info("== coin in DM: {}", dataModel.getCoin());
-        log.info("== getCoinTail: {}", getCoinTail(dataModel));
-        log.info("== sumOfVat in DM:{}", dataModel.getSumOfVat());
-        log.info("== getRubPart: {}", getRublePart(dataModel));
-        log.info("== getFullRubModification: {}", getFullRubModification(dataModel));
-        log.info("== getCoinPart: {}", getCoinPart(dataModel));
-        log.info("== getCoinModification: {}",getCoinModification(dataModel));
-
         if (currencyCollection.getCurrencyMap().containsKey(dataModel.getCurrency())) {
             appResponse.getResponses().add(getResponseV1(dataModel));
             appResponse.getResponses().add(getResponseV2(dataModel));
@@ -49,15 +39,10 @@ public class AppResponseBuilder {
             appResponse.getResponses().add(getResponseV9(dataModel));
             appResponse.getResponses().add(getResponseV10(dataModel));
             appResponse.getResponses().add(getResponseV11(dataModel));
-
-            for (String string : appResponse.getResponses()) {
-                log.info(">>App Responses: {}", string);
-            }
         }
-
         return this;
     }
-//TODO: make dataModelOfSumOfVat in responses methods
+
     public AppResponseDto getAppResponses() {
         return appResponse;
     }
@@ -272,7 +257,6 @@ public class AppResponseBuilder {
         StringBuilder result = new StringBuilder(str.substring(0, str.length() - endSize));
         return result;
     }
-
 
     private String getFullRubModification(DataModel dataModel){
         String[] str = dataModel.getSumWithoutCoin().toString().split("");

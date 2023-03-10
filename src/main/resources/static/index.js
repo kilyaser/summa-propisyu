@@ -1,4 +1,4 @@
-angular.module('app', ['ngStorage']).controller('sumController', function ($scope, $http) {
+angular.module('app', ['ngStorage']).controller('sumController', function ($scope, $http, $window) {
     const sumContextPath = 'http://localhost:8080/api/v1/convert'
 
     $scope.formInfo = {};
@@ -16,14 +16,12 @@ angular.module('app', ['ngStorage']).controller('sumController', function ($scop
                 $scope.sumWriting = response.data;
 
             }, function errorCallback(){
-               $scope.getResult($scope.defaultInfo);
+               $window.location.reload();
             });
 
     };
 
     $scope.copyResult = function (result, event) {
-
-
         var txtArea = document.createElement("textarea");
         txtArea.id = 'txt';
         txtArea.style.position = 'fixed';
